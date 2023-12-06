@@ -125,7 +125,7 @@ configuration to the devices using a single RESTCONF patch request:
           wall-clock 2s        2s                                     1s = 5s
 
 ```bash
-export $EXAMPLES_DIR = /home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/
+export EXAMPLE_DIR=/home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/
 cd $EXAMPLE_DIR/perf-trans
 make python
 python3 measure.py --ntrans 1 --nwork 2 --ndtrans 2 --cqparam bypass --ddelay 1
