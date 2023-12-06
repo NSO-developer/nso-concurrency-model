@@ -125,7 +125,7 @@ configuration to the devices using a single RESTCONF patch request:
           wall-clock 2s        2s                                     1s = 5s
 
 ```bash
-cd $NCS_DIR/examples.ncs/development-guide/concurrency-model/perf-trans
+cd /home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/perf-trans
 make python
 python3 measure.py --ntrans 1 --nwork 2 --ndtrans 2 --cqparam bypass --ddelay 1
 ```
@@ -143,7 +143,7 @@ service configuration to the devices using RESTCONF patch requests:
           wall-clock 1s        1s                                     1s = 3s
 
 ```bash
-cd $NCS_DIR/examples.ncs/development/concurrency-model/perf-trans
+cd /home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/perf-trans
 make python
 python3 measure.py --ntrans 2 --nwork 1 --ndtrans 1 --cqparam sync --ddelay 1
 ```
@@ -219,7 +219,7 @@ configuration to the devices using the CLI:
                       wall-clock 2s        2s                            1s=5s
 
 ```bash
-cd $NCS_DIR/examples.ncs/development/concurrency-model/perf-stack
+cd /home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/perf-stack
 ./showcase.sh -d 2 -t 1 -w 2 -r 2 -q 'True' -y 1
 ```
 
@@ -247,7 +247,7 @@ service configuration to the devices using the CLI:
                       wall-clock 1s        1s                            1s=3s
 
 ```bash
-cd $NCS_DIR/examples.ncs/development/concurrency-model/perf-stack
+cd /home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/perf-stack
 ./showcase.sh -d 2 -t 2 -w 1 -r 1 -q 'True' -y 1
 ```
 
@@ -308,7 +308,7 @@ synchronous commit queues, where each device simulates taking 1 second to make
 the configuration changes to the device:
 
 ```bash
-cd $NCS_DIR/examples.ncs/development/concurrency-model/perf-lsa
+cd /home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/perf-lsa
 ./showcase.sh -d 4 -t 4 -w 2 -r 1 -q 'True' -y 1
 ```
 
