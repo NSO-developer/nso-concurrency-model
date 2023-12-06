@@ -73,10 +73,10 @@ ncs_cli -n -u admin -C << EOF
 config
 cfs-t3s dev-settings dev-delay $DEV_DELAY
 commit
-end
-devices device lower-nso-1 config t3s calibrate-cpu-time
-devices device lower-nso-2 config t3s calibrate-cpu-time
 EOF
+
+ncs_cmd -p 4570 -c "maction /t3s/calibrate-cpu-time"
+ncs_cmd -p 4571 -c "maction /t3s/calibrate-cpu-time"
 
 printf "\n\n${PURPLE}##### Enable the NSO progress trace${NC}"
 ncs_cli -n -u admin -C << EOF
