@@ -127,7 +127,7 @@ configuration to the devices using a single RESTCONF patch request:
 ```bash
 export EXAMPLE_DIR=/home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/
 cd $EXAMPLE_DIR/perf-trans
-make python
+make NDEVS=2 python
 python3 measure.py --ntrans 1 --nwork 2 --ndtrans 2 --cqparam bypass --ddelay 1
 python3 ../common/simple_progress_trace_viewer.py $(ls logs/*.csv)
 ```
@@ -145,8 +145,6 @@ service configuration to the devices using RESTCONF patch requests:
           wall-clock 1s        1s                                     1s = 3s
 
 ```bash
-cd $EXAMPLE_DIR/perf-trans
-make python
 python3 measure.py --ntrans 2 --nwork 1 --ndtrans 1 --cqparam sync --ddelay 1
 python3 ../common/simple_progress_trace_viewer.py $(ls logs/*.csv)
 ```
@@ -179,6 +177,11 @@ You can play around with the `perf-trans`example by tweaking the parameters.
             Default: none
 
 See the README in the `perf-trans` example for details.
+
+Stop NSO and the netsim devices:
+```bash
+make stop
+```
 
 # Using a Resource Facing Nano Service
 
@@ -286,6 +289,11 @@ You can play around with the `perf-stack` example by tweaking the parameters.
 
 See the README in the `perf-stack`example for details.
 
+Stop NSO and the netsim devices:
+```bash
+make stop
+```
+
 # Layered Service Architecture
 
 The `perf-stack` example implements stacked services, a CFS
@@ -362,3 +370,8 @@ You can play around with the `perf-lsa` example by tweaking the parameters.
             Default: 1 second
 
 See the README in the `perf-lsa` example for details.
+
+Stop NSO and the netsim devices:
+```bash
+make stop
+```
