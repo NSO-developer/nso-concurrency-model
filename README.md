@@ -132,8 +132,6 @@ python3 measure.py --ntrans 1 --nwork 2 --ndtrans 2 --cqparam bypass --ddelay 1
 python3 ../common/simple_progress_trace_viewer.py $(ls logs/*.csv)
 ```
 
-Note that the last transaction, not visible in the progress traces above, is the transaction disabling of the progress trace.
-
 A sequence diagram describing the transactions `t0` and `t1` deploying
 service configuration to the devices using RESTCONF patch requests:
 
@@ -145,6 +143,7 @@ service configuration to the devices using RESTCONF patch requests:
           wall-clock 1s        1s                                     1s = 3s
 
 ```bash
+make NDEVS=2 python
 python3 measure.py --ntrans 2 --nwork 1 --ndtrans 1 --cqparam sync --ddelay 1
 python3 ../common/simple_progress_trace_viewer.py $(ls logs/*.csv)
 ```
@@ -320,7 +319,7 @@ the configuration changes to the device:
 
 ```bash
 cd $EXAMPLE_DIR/perf-lsa
-./showcase.sh -d 4 -t 4 -w 2 -r 1 -q 'True' -y 1
+./showcase.sh -d 2 -t 2 -w 2 -r 1 -q 'True' -y 1
 ```
 
 A sequence diagram describing the transactions `t0`, `t1`, `t2`, and `t3`
@@ -329,7 +328,7 @@ deploying service configuration to the devices using the CLI:
                                                                      config
                CFS             validate  service  push config        change
         CLI    create    Nano  config    create   ndtrans=1   netsim subscriber
-        commit ntrans=3  RFS 1 nwork=2   nwork=2  cq=True     device ddelay=1
+        commit ntrans=2  RFS 1 nwork=2   nwork=2  cq=True     device ddelay=1
           t -----> t ---> t0 --> 2s -----> 2s -------[----]---> ex0 ---> 1s
                     \     t1 --> 2s -----> 2s -------[----]---> ex1 ---> 1s
                      \   RFS 2
