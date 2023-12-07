@@ -118,7 +118,7 @@ A sequence diagram similar to the progress trace describing the transaction `t1`
 configuration to the devices using a single RESTCONF patch request:
 
         RESTCONF   service   validate   push config
-        patch      create    config     ndtrans=3        netsim
+        patch      create    config     ndtrans=2        netsim
         ntrans=1   nwork=2   nwork=2    cqparam=bypass   device    ddelay=1
           t0 ------> 2s -----> 2s -----------------------> ex0 -----> 1s
                                             \------------> ex1 -----> 1s
