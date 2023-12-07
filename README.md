@@ -288,6 +288,7 @@ You can play around with the `perf-stack` example by tweaking the parameters.
             Default: 1 second
 
 See the README in the `perf-stack` example for details.
+For even more details, use the steps in the showcase script instead of running it.
 
 Stop NSO and the netsim devices:
 ```bash
@@ -367,6 +368,7 @@ You can play around with the `perf-lsa` example by tweaking the parameters.
             Default: 1 second
 
 See the README in the `perf-lsa` example for details.
+For even more details, use the steps in the showcase script instead of running it.
 
 Stop NSO and the netsim devices:
 ```bash
