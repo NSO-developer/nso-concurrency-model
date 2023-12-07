@@ -124,6 +124,7 @@ configuration to the devices using a single RESTCONF patch request:
                                             \------------> ex1 -----> 1s
           wall-clock 2s        2s                                     1s = 5s
 
+If you use your local machine, not the Cloud IDE NSO Playground, change the `EXAMPLE_DIR` path below to match where you cloned the repo.
 ```bash
 export EXAMPLE_DIR=/home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/
 cd $EXAMPLE_DIR/perf-trans
@@ -287,6 +288,7 @@ You can play around with the `perf-stack` example by tweaking the parameters.
             Default: 1 second
 
 See the README in the `perf-stack` example for details.
+For even more details, use the steps in the showcase script instead of running it.
 
 Stop NSO and the netsim devices:
 ```bash
@@ -366,6 +368,7 @@ You can play around with the `perf-lsa` example by tweaking the parameters.
             Default: 1 second
 
 See the README in the `perf-lsa` example for details.
+For even more details, use the steps in the showcase script instead of running it.
 
 Stop NSO and the netsim devices:
 ```bash
