@@ -73,8 +73,8 @@ other's configuration changes.
 <img src="pics/service-dev-instances.png" width="1000px" height="auto" alt="Service to device instances">
 
 A CFS that maps to the RFS instances can simplify the service that is
-exposed to the NSO northbound interfaces and be used if migrating to layered service architecture
-setup.
+exposed to the NSO northbound interfaces and be used if migrating to a layered service architecture
+(LSA) setup.
 
 # Running Transactions Concurrently
 
@@ -97,6 +97,8 @@ to the commit queue.
 
 <img src="pics/commit-queues.png" width="1000px" height="auto" alt="Using commit queues">
 
+For commit queue documentation, see the [NSO User Guide](https://developer.cisco.com/docs/nso/guides/#!the-nso-device-manager/commit-queue).
+
 # Measure Transaction Performance
 
 Measure the performance using total wall-clock time for the service deployment and use the detailed NSO progress trace of the transactions to find bottlenecks. The developer log is helps debug the NSO internals, and the XPath trace log helps find misbehaving XPath expressions used in, for example, YANG `must` statements.
@@ -109,6 +111,8 @@ Using two transactions for one service instance and one device each. The total R
 push to be done concurrently from the two transactions.
 
 <img src="pics/progress-two.png" width="1000px" height="auto" alt="Progress trace two transactions">
+
+For progress trace documentation, see the [NSO Development Guide](https://developer.cisco.com/docs/nso/guides/#!progress-trace).
 
 ## Running the `perf-trans` Example
 
@@ -202,6 +206,8 @@ to configure multiple service instances where the NSO nano service divides the
 service instances into transactions running concurrently in separate processes.
 
 <img src="pics/nano.png" width="1000px" height="auto" alt="Using a nano service for transaction performance">
+
+For nano service documentation, see this [getting started example](https://developer.cisco.com/docs/nso/guides/#!developing-and-deploying-a-nano-service) and the [NSO Development Guide](https://developer.cisco.com/docs/nso/guides/#!nano-services-for-staged-provisioning).
 
 The `perf-stack` example showcases how a CFS on top of a simple resource-facing
 nano service can be implemented with the `perf-trans` example by modifying the
@@ -309,6 +315,8 @@ instance, `upper-nso`.
 <img src="pics/lsa.png" width="1000px" height="auto" alt="Using LSA">
 
 You can imagine adding more RFS NSO instances, `lower-nso-3`, etc., to the existing two as the number of devices increases. One NSO instance per multi-core processor and at least one CPU core per device (network element) is likely the most performant setup for this simulated work example.
+
+See the [LSA documentation](https://developer.cisco.com/docs/nso/guides/#!lsa-overview) for more.
 
 As an example, a variant that starts four RFS transactions with a 2-second
 CPU time workload per transaction in both the service and validation callbacks,
