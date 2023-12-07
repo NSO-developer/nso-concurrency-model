@@ -2,50 +2,50 @@
 
 [![Run in Cisco Cloud IDE](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-runable-icon.svg)](https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso-local&GITHUB_SOURCE_REPO=https://github.com/NSO-developer/nso-concurrency-model)
 
-Learn more about the NSO concurrencty model and how to optimize for transaction throughput. I.e. transaction wall-clock time performance.
+Learn more about the NSO concurrency model and how to optimize for transaction throughput. I.e., transaction wall-clock time performance.
 
-[Click here](https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso-local&GITHUB_SOURCE_REPO=https://github.com/NSO-developer/nso-concurrency-model) to practice this Lab on the NSO Playground.
+[Click here](https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso-local&GITHUB_SOURCE_REPO=https://github.com/NSO-developer/nso-concurrency-model) to practice this lab on the NSO Playground.
 
 ## Objectives
 
-After completing this Lab you will learn how to:
+After completing this lab, you will learn how to:
 
 - Design for concurrency
 - Measure transaction performance
 - Run NSO transactions concurrently
 - Use commit queues
-- Implement a resource facing nano service to divide a single transaction into
-  one transaction per service instances and CPU core
+- Implement a resource-facing nano service to divide a single transaction into
+  one transaction per service instance and CPU core
 - Use LSA to scale transaction performance beyond a single multi-core processor
 
 # The NSO Transaction Manager
 
 NSO has two main layers: the Device Manager and the Service Manager. They serve different purposes but are tightly integrated with the transactional engine and database.
 
-Since version 6.0, the NSO transaction manager uses so-called optimistic concurrency, which greatly improves transaction parallelism. With this approach, NSO avoids the need for serialization and a global lock to run user code which would otherwise limit the number of requests the system can process in a given time unit.
+Since version 6.0, the NSO transaction manager has used optimistic concurrency, significantly improving transaction parallelism. With this approach, NSO avoids the need for serialization and a global lock to run user code, which would otherwise limit the number of requests the system can process in a given time unit.
 
 <img src="pics/trans-mgr.png" width="1000px" height="auto" alt="Transaction manager">
 
-There are three areas where the NSO user can greatly affect the transaction throughput performance:
+There are three areas where the NSO user can significantly affect the transaction throughput performance:
 
-- Concurrent transactions. The number of transactions started by separate processes. This could be multiple concurrent RESTCONF or NETCONF edits, CLI commits, MAAPI apply(), nano service component instances etc.
-- Minimizing the service create() and validation implementation. This could, for example, be service templates and code mapping to devices or other service instances, YANG must statements with XPath expressions, or validation code.
+- Concurrent transactions. The number of transactions started by separate processes. For example, multiple concurrent RESTCONF or NETCONF edits, CLI commits, MAAPI apply(), nano service component instances etc.
+- Minimizing the service create() and validation implementation. For example, in service templates and code mapping to devices or other service instances, YANG must statements with XPath expressions or validation code.
 - Using commit queues to exclude the time to push configuration changes to devices from inside the transaction lock.
 
 <img src="pics/trans-perf.png" width="1000px" height="auto" alt="Transaction manager performance">
 
 # Designing for Concurrency - Avoiding Conflicts
 
-Everything from smartphones and tablets to laptops, desktops and servers now
-contain multi-core processors. To attain maximal throughput, you need to
-fully utilize these powerful, multi-core systems. This way you can minimize
+Everything from smartphones and tablets to laptops, desktops, and servers now
+contain multi-core processors. To attain maximal throughput, you need to fully
+utilize these powerful, multi-core systems. This way you can minimize
 the real (wall-clock) time when deploying service configuration changes to
 the network, which is what we usually equate with performance.
 
 Therefore, you want to ensure that NSO can spread as much work as
-possible across all available cores. The goal is to have your service
-deployments maximize their utilization of the total available CPU time, in
-order to deploy services faster to the users who ordered them.
+possible across all available cores. The goal is to have your service deployments
+maximize their utilization of the total available CPU time to deploy services
+faster to the users who ordered them.
 
 That means you would ideally like to see close to full utilization of every
 core when running under maximal load, such as shown by `htop`:
@@ -65,22 +65,22 @@ core when running under maximal load, such as shown by `htop`:
         ...
 
 While transaction conflicts in NSO can be handled gracefully with retries,
-retries will affect the transaction throughput performance. To avoid conflicts,
-a simple but effective design pattern is to update one device with one resource
-facing service instance where service instances does not read each others
-configuration changes.
+retries affect transaction throughput performance. To avoid conflicts,
+a simple but effective design pattern is to update one device with one
+resource-facing service instance where service instances do not read each
+other's configuration changes.
 
 <img src="pics/service-dev-instances.png" width="1000px" height="auto" alt="Service to device instances">
 
 A CFS that maps to the RFS instances can simplify the service that is
-exposed to the NSO northbound interfaces amd be used if migrating to layered service architecture
+exposed to the NSO northbound interfaces and be used if migrating to layered service architecture
 setup.
 
 # Running Transactions Concurrently
 
 Using one transaction per RFS instance and device will allow each NSO transaction to run on a
 separate core concurrently. This could be multiple concurrent RESTCONF or NETCONF edits, CLI commits, MAAPI apply(), nano service component instances etc. Keeping the running maximum concurrent transactions to match or below
-the number of cores available in the multi-core processor avoids performance degradation due to increased contention on system internals and resources. NSO helps out by limiting the number of running datastore transactions
+the number of cores available in the multi-core processor avoids performance degradation due to increased contention on system internals and resources. NSO helps by limiting the number of running datastore transactions
 to, by default, the number of logical processors (e.g., CPU cores). See the [ncs.conf(5)](https://developer.cisco.com/docs/nso/guides/#!ncs-man-pages-volume-5/ncs-conf) man page under `/ncs-config/transaction-limits/max-transactions` for details.
 
 <img src="pics/concurrent-trans.png" width="1000px" height="auto" alt="Concurrent transactions">
@@ -91,28 +91,28 @@ The concept of a network-wide transaction requires NSO to wait for the managed
 devices to process the configuration change completely before that transaction lock
 can be released. In the meantime, other transactions have to wait their turn to access the devices.
 You can use the commit queue feature to avoid the wait and increase the throughput.
-Writing to the commit queue instead of the device moves the device config push outside
-of the critical region and the lock can be released when the change has been written
+Writing to the commit queue instead of the device moves the device configuration push outside
+of the critical region, and the lock can be released when the change has been written
 to the commit queue.
 
 <img src="pics/commit-queues.png" width="1000px" height="auto" alt="Using commit queues">
 
 # Measure Transaction Performance
 
-Measure the performance using total wall-clock time for the service deployment and use the detailed NSO progress trace of the transactions to find bottlenecks. The developer log is useful for debugging the NSO internals, and XPath trace log help with finding missbehaving XPath expressions used in, for example, YANG `must` statements.
+Measure the performance using total wall-clock time for the service deployment and use the detailed NSO progress trace of the transactions to find bottlenecks. The developer log is helps debug the NSO internals, and the XPath trace log helps find misbehaving XPath expressions used in, for example, YANG `must` statements.
 
-The picture below shows a single transaction for two services instances to two devices. The total RESTCONF edit took 13 seconds, the service mapping and validation was done sequentially for the service instances and took 6 seconds each. The configuration push to the devices was done concurrently in 1 second.
+The picture below shows a single transaction for two service instances to two devices. The total RESTCONF edit took 13 seconds, and the service mapping and validation were done sequentially for the service instances and took 6 seconds each. The configuration push to the devices was done concurrently in 1 second.
 
 <img src="pics/progress-one.png" width="1000px" height="auto" alt="Progress trace one transaction">
 
-Using two transaction for one services instance and one device each. The total RESTCONF edit took 7 seconds, the service mapping and validation was done sequentially for the service instances and took 3 seconds each. The configuration push to the devices was done concurrently in 1 second thanks to the commit queue allowing the
+Using two transactions for one service instance and one device each. The total RESTCONF edit took 7 seconds, and the service mapping and validation were done sequentially for the service instances and took 3 seconds each. The configuration push to the devices was done concurrently in 1-second thanks to the commit queue allowing the
 push to be done concurrently from the two transactions.
 
 <img src="pics/progress-two.png" width="1000px" height="auto" alt="Progress trace two transactions">
 
 ## Running the `perf-trans` Example
 
-To repeat the two variants in the progress traces above you can run the perf-trans example from the NSO example set.
+You can run the perf-trans example from the NSO example set to repeat the two variants in the progress traces above.
 
 A sequence diagram similar to the progress trace describing the transaction `t1` deploying service
 configuration to the devices using a single RESTCONF patch request:
@@ -151,7 +151,7 @@ python3 ../common/simple_progress_trace_viewer.py $(ls logs/*.csv)
 The two transactions run concurrently, performing the same work as in the
 previous example in ~3 seconds (plus some overhead) of wall-clock time.
 
-You can play around with the `perf-trans`example by tweaking the parameters.
+You can play around with the `perf-trans` example by tweaking the parameters.
 
         -nt NTRANS, --ntrans NTRANS
             Number of transactions updating the same service in parallel. For this
@@ -184,7 +184,7 @@ make stop
 
 # Using a Resource Facing Nano Service
 
-The `perf-trans` example service use one transaction per service instance
+The `perf-trans` example service uses one transaction per service instance
 where each service instance configures one device. This enables transactions to
 run concurrently on separate CPU cores in a multi-core processor. The example
 sends RESTCONF PATCH requests concurrently to start transactions that run
@@ -194,8 +194,8 @@ However, dividing the work into multiple processes may not be practical for
 some applications using the NSO northbound interfaces, e.g., CLI or RESTCONF.
 Also, it makes a future migration to LSA more complex.
 
-To simplify for the NSO manager application and user, a resource facing nano
-service (RFS) can start a processes per service instance. The NSO manager
+To simplify for the NSO manager application and user, a resource-facing nano
+service (RFS) can start a process per service instance. The NSO manager
 application or user can then use a single transaction, e.g., CLI or RESTCONF,
 to configure multiple service instances where the NSO nano service divides the
 service instances into transactions running concurrently in separate processes.
@@ -239,7 +239,7 @@ each transaction pushing the device configuration to 1 device, each using
 a synchronous commit queue, where each device simulates taking 1 second to make
 the configuration changes to the device below.
 
-A sequence diagram describing the transactions `t0`and `t1` deploying
+A sequence diagram describing the transactions `t0` and `t1` deploying
 service configuration to the devices using the CLI:
 
                                                                       config
@@ -286,7 +286,7 @@ You can play around with the `perf-stack` example by tweaking the parameters.
             Transaction delay (simulated by sleeping) on the netsim devices (seconds).
             Default: 1 second
 
-See the README in the `perf-stack`example for details.
+See the README in the `perf-stack` example for details.
 
 Stop NSO and the netsim devices:
 ```bash
@@ -306,10 +306,7 @@ instance, `upper-nso`.
 
 <img src="pics/lsa.png" width="1000px" height="auto" alt="Using LSA">
 
-You can imagine adding more RFS NSO instances, `lower-nso-3` etc., to the
-existing two as the number of devices increases. For this simulated work
-example, one NSO instance per multi-core processor and at least one CPU core
-per device (network element) is likely the most performant setup.
+You can imagine adding more RFS NSO instances, `lower-nso-3`, etc., to the existing two as the number of devices increases. One NSO instance per multi-core processor and at least one CPU core per device (network element) is likely the most performant setup for this simulated work example.
 
 As an example, a variant that starts four RFS transactions with a 2-second
 CPU time workload per transaction in both the service and validation callbacks,
