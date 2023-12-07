@@ -138,7 +138,7 @@ service configuration to the devices using RESTCONF patch requests:
 
         RESTCONF   service   validate   push config
         patch      create    config     ndtrans=1        netsim
-        ntrans=3   nwork=1   nwork=1    cqparam=sync     device    ddelay=1
+        ntrans=2   nwork=1   nwork=1    cqparam=sync     device    ddelay=1
           t0 ------> 1s -----> 1s --------------[----]---> ex0 -----> 1s
           t1 ------> 1s -----> 1s --------------[----]---> ex1 -----> 1s
           wall-clock 1s        1s                                     1s = 3s
