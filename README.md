@@ -112,6 +112,8 @@ push to be done concurrently from the two transactions.
 
 <img src="pics/progress-two.png" width="1000px" height="auto" alt="Progress trace two transactions">
 
+See the `showcase.sh` and `measure.py` scripts plus the `ncs.conf` files in the examples on how to enable and disable the progress trace, and the simple progress trace viewer Python script under the `common` folder.
+
 For progress trace documentation, see the [NSO Development Guide](https://developer.cisco.com/docs/nso/guides/#!progress-trace).
 
 ## Running the `perf-trans` Example
