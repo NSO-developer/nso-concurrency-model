@@ -134,7 +134,7 @@ configuration to the devices using a single RESTCONF patch request:
 
 If you use your local machine, not the Cloud IDE NSO Playground, change the `EXAMPLE_DIR` path below to match where you cloned the repo.
 ```bash
-export EXAMPLE_DIR=/home/developer/nso/examples.ncs/concurrency/
+export EXAMPLE_DIR=/home/developer/nso/examples.ncs/development-guide/concurrency-model/
 cd $EXAMPLE_DIR/perf-trans
 make NDEVS=2 python
 python3 measure.py --ntrans 1 --nwork 2 --ndtrans 2 --cqparam bypass --ddelay 1
