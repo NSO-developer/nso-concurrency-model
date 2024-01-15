@@ -5,6 +5,7 @@
 Learn more about the NSO concurrency model and how to optimize for transaction throughput. I.e., transaction wall-clock time performance.
 
 [Click here](https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso&GITHUB_SOURCE_REPO=https://github.com/NSO-developer/nso-concurrency-model) to practice this lab on the NSO Playground.
+An [overview presentation](https://www.youtube.com/watch?v=yC1zNDEWAGI) of the NSO features used by this lab.
 
 ## Objectives
 
