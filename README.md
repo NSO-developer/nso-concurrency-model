@@ -28,7 +28,7 @@ Since version 6.0, the NSO transaction manager has used optimistic concurrency, 
 
 There are three areas where the NSO user can significantly affect the transaction throughput performance:
 
-- Concurrent transactions. The number of transactions started by separate processes. For example, multiple concurrent RESTCONF or NETCONF edits, CLI commits, MAAPI apply(), nano service component instances etc.
+- Concurrent transactions. The number of transactions started by separate processes. For example, multiple concurrent RESTCONF or NETCONF edits, CLI commits, MAAPI apply(), nano service component instances, etc.
 - Minimizing the service create() and validation implementation. For example, in service templates and code mapping to devices or other service instances, YANG must statements with XPath expressions or validation code.
 - Using commit queues to exclude the time to push configuration changes to devices from inside the transaction lock.
 
@@ -38,8 +38,8 @@ There are three areas where the NSO user can significantly affect the transactio
 
 Everything from smartphones and tablets to laptops, desktops, and servers now
 contain multi-core processors. To attain maximal throughput, you need to fully
-utilize these powerful, multi-core systems. This way you can minimize
-the real (wall-clock) time when deploying service configuration changes to
+utilize these powerful, multi-core systems. This way, you can minimize
+the real (wall clock) time when deploying service configuration changes to
 the network, which is what we usually equate with performance.
 
 Therefore, you want to ensure that NSO can spread as much work as
@@ -101,13 +101,13 @@ For commit queue documentation, see the [NSO User Guide](https://developer.cisco
 
 # Measure Transaction Performance
 
-Measure the performance using total wall-clock time for the service deployment and use the detailed NSO progress trace of the transactions to find bottlenecks. The developer log is helps debug the NSO internals, and the XPath trace log helps find misbehaving XPath expressions used in, for example, YANG `must` statements.
+Measure the performance using total wall-clock time for the service deployment and use the detailed NSO progress trace of the transactions to find bottlenecks. The developer log helps debug the NSO internals, and the XPath trace log helps find misbehaving XPath expressions used in, for example, YANG `must` statements.
 
 The picture below shows a single transaction for two service instances to two devices. The total RESTCONF edit took 13 seconds, and the service mapping and validation were done sequentially for the service instances and took 6 seconds each. The configuration push to the devices was done concurrently in 1 second.
 
 <img src="pics/progress-one.png" width="1000px" height="auto" alt="Progress trace one transaction">
 
-Using two transactions for one service instance and one device each. The total RESTCONF edit took 7 seconds, and the service mapping and validation were done sequentially for the service instances and took 3 seconds each. The configuration push to the devices was done concurrently in 1-second thanks to the commit queue allowing the
+Using two transactions for one service instance and one device each. The total RESTCONF edit took 7 seconds, and the service mapping and validation were done sequentially for the service instances and took 3 seconds each. The configuration push to the devices was done concurrently in 1-second, thanks to the commit queue, allowing the
 push to be done concurrently from the two transactions.
 
 <img src="pics/progress-two.png" width="1000px" height="auto" alt="Progress trace two transactions">
@@ -132,7 +132,7 @@ configuration to the devices using a single RESTCONF patch request:
 
 If you use your local machine, not the Cloud IDE NSO Playground, change the `EXAMPLE_DIR` path below to match where you cloned the repo.
 ```bash
-export EXAMPLE_DIR=/home/developer/src/nso-concurrency-model/concurrency-model-6.2.x/
+export EXAMPLE_DIR=/home/developer/nso/examples.ncs/concurrency/
 cd $EXAMPLE_DIR/perf-trans
 make NDEVS=2 python
 python3 measure.py --ntrans 1 --nwork 2 --ndtrans 2 --cqparam bypass --ddelay 1
@@ -161,12 +161,12 @@ previous example in ~3 seconds (plus some overhead) of wall-clock time.
 You can play around with the `perf-trans` example by tweaking the parameters.
 
         -nt NTRANS, --ntrans NTRANS
-            Number of transactions updating the same service in parallel. For this
-            example we use NTRANS parallel RESTCONF plain patches.
+            The number of transactions updating the same service in parallel. For this
+            example, we use NTRANS parallel RESTCONF plain patches.
             Default: 1.
 
         -nw NWORK, --nwork NWORK
-            Work per transaction in the service create and validation phases. One
+            Work per transaction in the service creation and validation phases. One
             second of CPU time per work item.
             Default: 3 seconds of CPU time.
 
@@ -179,7 +179,7 @@ You can play around with the `perf-trans` example by tweaking the parameters.
             Default: 0s
 
         -cq {async,sync,bypass,none}, --cqparam {async,sync,bypass,none}
-            Commit queue behavior. Select "none" to use global or device setting.
+            Commit queue behavior. Select "none" to use the global or device setting.
             Default: none
 
 See the README in the `perf-trans` example for details.
@@ -201,7 +201,7 @@ However, dividing the work into multiple processes may not be practical for
 some applications using the NSO northbound interfaces, e.g., CLI or RESTCONF.
 Also, it makes a future migration to LSA more complex.
 
-To simplify for the NSO manager application and user, a resource-facing nano
+To simplify the NSO manager application, a resource-facing nano
 service (RFS) can start a process per service instance. The NSO manager
 application or user can then use a single transaction, e.g., CLI or RESTCONF,
 to configure multiple service instances where the NSO nano service divides the
@@ -271,15 +271,15 @@ previous example in ~3 seconds (plus some overhead) of wall-clock time.
 You can play around with the `perf-stack` example by tweaking the parameters.
 
         -d  NDEVS
-            Number of netsim (ConfD) devices (network elements) started.
+            The number of netsim (ConfD) devices (network elements) started.
             Default 4
 
         -t  NTRANS
-            Number of transactions updating the same service in parallel.
+            Tne number of transactions updating the same service in parallel.
             Default: $NDEVS
 
         -w  NWORK
-            Work per transaction in the service create and validation phases. One
+            Work per transaction in the service creation and validation phases. One
             second of CPU time per work item.
             Default: 3 seconds of CPU time.
 
@@ -357,11 +357,11 @@ You can play around with the `perf-lsa` example by tweaking the parameters.
 
         -t  NTRANS
             Number of transactions updating the same service in parallel per RFS NSO
-            instance. Here one per device.
+            instance. Here, one per device.
             Default: $LDEVS ($LDEVS * 2 total)
 
         -w  NWORK
-            Work per transaction in the service create and validation phases. One
+            Work per transaction in the service creation and validation phases. One
             second of CPU time per work item.
             Default: 3 seconds of CPU time.
 
