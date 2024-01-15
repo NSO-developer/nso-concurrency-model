@@ -1,10 +1,10 @@
 # NSO Concurrency Model
 
-[![Run in Cisco Cloud IDE](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-runable-icon.svg)](https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso-local&GITHUB_SOURCE_REPO=https://github.com/NSO-developer/nso-concurrency-model)
+[![Run in Cisco Cloud IDE](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-runable-icon.svg)](https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso&GITHUB_SOURCE_REPO=https://github.com/NSO-developer/nso-concurrency-model)
 
 Learn more about the NSO concurrency model and how to optimize for transaction throughput. I.e., transaction wall-clock time performance.
 
-[Click here](https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso-local&GITHUB_SOURCE_REPO=https://github.com/NSO-developer/nso-concurrency-model) to practice this lab on the NSO Playground.
+[Click here](https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso&GITHUB_SOURCE_REPO=https://github.com/NSO-developer/nso-concurrency-model) to practice this lab on the NSO Playground.
 
 ## Objectives
 
