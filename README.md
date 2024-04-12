@@ -344,7 +344,7 @@ make stop
 
 If the processor where NSO runs becomes a severe bottleneck, the CFS can migrate to a layered service architecture (LSA) setup. The `perf-stack` example implements stacked services, a CFS abstracting the RFS. It allows for easy migration to an LSA setup to scale with the number of devices or network elements participating in the service deployment. While adding complexity, LSA allows exposing a single CFS instance for all processors instead of one per processor.
 
-> [!NOTE]
+> ***Note:***
 > Before considering taking on the complexity of a multi-NSO node LSA setup, make sure you have done the following:
 >
 > * Explored all possible avenues of design and optimization improvements described so far in this section.
