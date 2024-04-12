@@ -344,15 +344,17 @@ make stop
 
 If the processor where NSO runs becomes a severe bottleneck, the CFS can migrate to a layered service architecture (LSA) setup. The `perf-stack` example implements stacked services, a CFS abstracting the RFS. It allows for easy migration to an LSA setup to scale with the number of devices or network elements participating in the service deployment. While adding complexity, LSA allows exposing a single CFS instance for all processors instead of one per processor.
 
-[!NOTE]
-Before considering taking on the complexity of a multi-NSO node LSA setup, make sure you have done the following:
-* Explored all possible avenues of design and optimization improvements described so far in this section.
-* Measured the transaction performance to find bottlenecks.
-* Optimized any bottlenecks to reduce their overhead as much as possible.
-* Observe that the available processor cores are all fully utilized.
-* Explored running NSO on a more powerful processor with more CPU cores and faster clock speed.
-* If there are more devices and RFS instances created at one point than available CPU cores, verify that increasing the number of CPU cores will result in a significant improvement. I.e., if the CPU processing spent on service creation and validation is substantial, the bottleneck, compared to writing the configuration to CDB and the commit queues and pushing the configuration to the devices.
-Migrating to an LSA setup should only be considered after checking all boxes for the above items.
+> [!NOTE]
+> Before considering taking on the complexity of a multi-NSO node LSA setup, make sure you have done the following:
+>
+> * Explored all possible avenues of design and optimization improvements described so far in this section.
+> * Measured the transaction performance to find bottlenecks.
+> * Optimized any bottlenecks to reduce their overhead as much as possible.
+> * Observe that the available processor cores are all fully utilized.
+> * Explored running NSO on a more powerful processor with more CPU cores and faster clock speed.
+> * If there are more devices and RFS instances created at one point than available CPU cores, verify that increasing the number of CPU cores will result in a significant improvement. I.e., if the CPU processing spent on service creation and validation is substantial, the bottleneck, compared to writing the configuration to CDB and the commit queues and pushing the configuration to the devices.
+>
+> Migrating to an LSA setup should only be considered after checking all boxes for the above items.
 
 <img src="pics/lsa-design.png" width="1000px" height="auto" alt="LSA design">
 
