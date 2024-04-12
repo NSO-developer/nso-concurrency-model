@@ -393,12 +393,12 @@ A sequence diagram describing the transactions on RFS 1 `t1` `t2` and RFS 2 `t1`
                CFS             validate  service  push config        change
         CLI    create    Nano  config    create   ndtrans=1   netsim subscriber
         commit ntrans=2  RFS 1 nwork=1   nwork=1  cq=True     device ddelay=1
-        t -----> t ---> t1 --> 1s -----> 1s -------[----]---> ex0 ---> 1s
-                  \     t2 --> 1s -----> 1s -------[----]---> ex1 ---> 1s
-                   \   RFS 2
-                    --> t1 --> 1s -----> 1s -------[----]---> ex2 ---> 1s
-                        t2 --> 1s -----> 1s -------[----]---> ex3 ---> 1s
-                    wall-clock 1s        1s                            1s=3s
+          t -----> t ---> t1 --> 1s -----> 1s -------[----]---> ex0 ---> 1s
+                    \     t2 --> 1s -----> 1s -------[----]---> ex1 ---> 1s
+                     \   RFS 2
+                      --> t1 --> 1s -----> 1s -------[----]---> ex2 ---> 1s
+                          t2 --> 1s -----> 1s -------[----]---> ex3 ---> 1s
+                      wall-clock 1s        1s                            1s=3s
 
 The four transactions run concurrently, two per RFS node, performing the work and configuring the four devices in ~3 seconds (plus some overhead) of wall-clock time.
 
