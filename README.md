@@ -152,8 +152,6 @@ The `perf-setvals` example writes configuration to an access control list and a 
 To run the `perf-setvals` example using MAAPI Python `create()` and `set()` calls to create 3000 rules and 3000 routes on one device:
 
 ```bash
-cd $NCS_DIR/examples.ncs/development-guide/concurrency-model
-tar xvfz ~/src/nso-concurrency-model/perf-setvals.tar.gz
 cd $NCS_DIR/examples.ncs/development-guide/concurrency-model/perf-setvals
 ./measure.sh -r 3000 -t py_create -n true
 ```
