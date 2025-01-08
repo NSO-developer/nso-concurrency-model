@@ -89,7 +89,7 @@ See the `README` in the perf-trans example for details.
 To run the `perf-trans` example from the NSO example set and recreate the variant shown in the progress trace above:
 
 ```bash
-cd $NCS_DIR/examples.ncs/development-guide/concurrency-model/perf-trans
+cd $NCS_DIR/examples.ncs/scaling-performance/perf-trans
 make NDEVS=2 python
 python3 measure.py --ntrans 1 --nwork 2 --ndtrans 2 --cqparam bypass --ddelay 1
 python3 ../common/simple_progress_trace_viewer.py $(ls logs/*.csv)
@@ -152,7 +152,7 @@ The `perf-setvals` example writes configuration to an access control list and a 
 To run the `perf-setvals` example using MAAPI Python `create()` and `set()` calls to create 3000 rules and 3000 routes on one device:
 
 ```bash
-cd $NCS_DIR/examples.ncs/development-guide/concurrency-model/perf-setvals
+cd $NCS_DIR/examples.ncs/scaling-performance/perf-setvals
 ./measure.sh -r 3000 -t py_create -n true
 ```
 
@@ -190,7 +190,7 @@ Writing to devices and other network elements that are slow to configure will st
 Dividing the service creation and validation work into two separate transactions, one per device, allows the work to be spread across two CPU cores in a multi-core processor. To run the `perf-trans` example with the work divided into one transaction per device:
 
 ```bash
-cd $NCS_DIR/examples.ncs/development-guide/concurrency-model/perf-trans
+cd $NCS_DIR/examples.ncs/scaling-performance/perf-trans
 make stop clean NDEVS=2 python
 python3 measure.py --ntrans 2 --nwork 1 --ndtrans 1 --cqparam bypass --ddelay 1
 python3 ../common/simple_progress_trace_viewer.py $(ls logs/*.csv)
@@ -284,7 +284,7 @@ The `perf-stack` example showcases how a CFS on top of a simple resource-facing 
 Run as below to start two transactions with a 1-second CPU time workload per transaction in both the service and validation callbacks, each transaction pushing the device configuration to one device, each using a synchronous commit queue, where each device simulates taking 1 second to make the configuration changes to the device:
 
 ```bash
-cd $NCS_DIR/examples.ncs/development-guide/concurrency-model/perf-stack
+cd $NCS_DIR/examples.ncs/scaling-performance/perf-stack
 ./showcase.sh -d 2 -t 2 -w 1 -r 1 -q 'True' -y 1
 ```
 
@@ -367,7 +367,7 @@ You can imagine adding more RFS NSO instances, `lower-nso-3`, `lower-nso-4`, etc
 As an example, a variant that starts four RFS transactions with a 1-second CPU time workload per transaction in both the service and validation callbacks, each RFS transaction pushing the device configuration to 1 device using synchronous commit queues, where each device simulates taking 1 second to make the configuration changes to the device:
 
 ```bash
-cd $NCS_DIR/examples.ncs/development-guide/concurrency-model/perf-lsa
+cd $NCS_DIR/examples.ncs/scaling-performance/perf-lsa
 ./showcase.sh -d 2 -t 2 -w 1 -r 1 -q 'True' -y 1
 ```
 
