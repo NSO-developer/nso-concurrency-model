@@ -48,7 +48,7 @@ The total RESTCONF edit took ~5 seconds, and the service mapping (“creating se
 
 See the `showcase.sh` and `measure.py` scripts plus the `ncs.conf` files in the examples on how to enable and disable the progress trace, and the simple progress trace viewer Python script under the `common` folder.
 
-For progress trace documentation, see the [NSO Development Guide](https://cisco-tailf.gitbook.io/nso-docs/development/advanced-development/progress-trace).
+For progress trace documentation, see the [NSO Development Guide](https://cisco-tailf.gitbook.io/nso-docs/guides/development/advanced-development/progress-trace).
 
 ## Running the `perf-trans` Example Using a Single Transaction
 
@@ -135,7 +135,7 @@ One transaction per RFS instance and device will allow each NSO transaction to r
 
 # Designing to Minimize Conflicts
 
-Conflicts between transactions and how to avoid them are described in the NSO Development Guide chapter [NSO Concurrency Model](https://cisco-tailf.gitbook.io/nso-docs/development/core-concepts/nso-concurrency-model). While NSO can handle transaction conflicts gracefully with retries, retries affect transaction throughput performance. A simple but effective design pattern to avoid conflicts is to update one device with one Resource Facing Service (RFS) instance where service instances do not read each other's configuration changes.
+Conflicts between transactions and how to avoid them are described in the NSO Development Guide chapter [NSO Concurrency Model](https://cisco-tailf.gitbook.io/nso-docs/guides/development/core-concepts/nso-concurrency-model). While NSO can handle transaction conflicts gracefully with retries, retries affect transaction throughput performance. A simple but effective design pattern to avoid conflicts is to update one device with one Resource Facing Service (RFS) instance where service instances do not read each other's configuration changes.
 
 <img src="pics/service-dev-instances.png" width="1000px" height="auto" alt="Service to device instances">
 
@@ -179,7 +179,7 @@ make stop
 
 # Use a Data-Kicker Instead of a CDB Subscriber
 
-A kicker triggering on a CDB change, a data-kicker, should be used instead of a CDB subscriber when the action taken does not have to run inside the transaction lock, i.e., the critical section of the transaction. A CDB subscriber will be invoked inside the critical section and, thus, will have negative impact on the transaction throughput. See the NSO Development Guide [Improving Subscribers](https://cisco-tailf.gitbook.io/nso-docs/development/advanced-development/scaling-and-performance-optimization#ncs.development.scaling.kicker) for more details.
+A kicker triggering on a CDB change, a data-kicker, should be used instead of a CDB subscriber when the action taken does not have to run inside the transaction lock, i.e., the critical section of the transaction. A CDB subscriber will be invoked inside the critical section and, thus, will have negative impact on the transaction throughput. See the NSO Development Guide [Improving Subscribers](https://cisco-tailf.gitbook.io/nso-docs/guides/development/advanced-development/scaling-and-performance-optimization#ncs.development.scaling.kicker) for more details.
 
 # Shorten the Time Used for Writing Configuration to Devices
 
@@ -221,7 +221,7 @@ Writing to a commit queue instead of the device moves the device configuration p
 
 <img src="pics/commit-queues.png" width="1000px" height="auto" alt="Using commit queues">
 
-For commit queue documentation, see the NSO Operation & Usage Guide chapter [Commit Queue](https://cisco-tailf.gitbook.io/nso-docs/operation-and-usage/operations/nso-device-manager#user_guide.devicemanager.commit-queue).
+For commit queue documentation, see the NSO Operation & Usage Guide chapter [Commit Queue](https://cisco-tailf.gitbook.io/nso-docs/guides/operation-and-usage/operations/nso-device-manager#user_guide.devicemanager.commit-queue).
 
 ## Enabling Commit Queues for the perf-trans Example
 
@@ -267,7 +267,7 @@ The nano service can be straightforward, for example, using a single `t3:configu
 
 <img src="pics/concurrent-nano.png" width="1000px" height="auto" alt="Nano service RFS plan">
 
-See the NSO Development Guide chapter [Nano Services](https://cisco-tailf.gitbook.io/nso-docs/development/core-concepts/nano-services) and chapter [Develop and Deploy a Nano Service](https://cisco-tailf.gitbook.io/nso-docs/development/introduction-to-automation/develop-and-deploy-a-nano-service) for nano service documentation.
+See the NSO Development Guide chapter [Nano Services](https://cisco-tailf.gitbook.io/nso-docs/guides/development/core-concepts/nano-services) and chapter [Develop and Deploy a Nano Service](https://cisco-tailf.gitbook.io/nso-docs/guides/development/introduction-to-automation/develop-and-deploy-a-nano-service) for nano service documentation.
 
 # Simplify Using a CFS
 
@@ -362,7 +362,7 @@ The `perf-lsa` example builds on the `perf-stack` example and showcases an LSA s
 
 <img src="pics/lsa-transaction.png" width="1000px" height="auto" alt="LSA transaction sequence diagram">
 
-You can imagine adding more RFS NSO instances, `lower-nso-3`, `lower-nso-4`, etc., to the existing two as the number of devices increases. One NSO; instance per multi-core processor and at least one CPU core per device (network element) is likely the most performant setup for this simulated work example. See the NSO Administration Guide chapter [Layered Service Architecture](https://cisco-tailf.gitbook.io/nso-docs/administration/advanced-topics/layered-service-architecture) for more.
+You can imagine adding more RFS NSO instances, `lower-nso-3`, `lower-nso-4`, etc., to the existing two as the number of devices increases. One NSO; instance per multi-core processor and at least one CPU core per device (network element) is likely the most performant setup for this simulated work example. See the NSO Administration Guide chapter [Layered Service Architecture](https://cisco-tailf.gitbook.io/nso-docs/guides/administration/advanced-topics/layered-service-architecture) for more.
 
 As an example, a variant that starts four RFS transactions with a 1-second CPU time workload per transaction in both the service and validation callbacks, each RFS transaction pushing the device configuration to 1 device using synchronous commit queues, where each device simulates taking 1 second to make the configuration changes to the device:
 
